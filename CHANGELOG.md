@@ -4,7 +4,10 @@ All notable changes to EasyMDE will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-<!-- ## [Unreleased] -->
+## [Unreleased]
+### Added
+- `minLength` and `maxLength` options with accessible character-limit feedback in the status bar.
+
 ## [2.21.0] - 2026-05-03
 ### Added
 - Check-list toolbar button and the ability to switch between unordered, ordered, and check-list types (Thanks to [@steve3ussr], [#631]).

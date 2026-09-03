@@ -1835,6 +1835,10 @@ function EasyMDE(options) {
         if (options.uploadImage) {
             options.status.unshift('upload-image');
         }
+
+        if (options.minLength !== undefined || options.maxLength !== undefined) {
+            options.status.splice(options.status.indexOf('cursor'), 0, 'characters');
+        }
     }
 
 
@@ -2769,6 +2773,66 @@ EasyMDE.prototype.createStatusbar = function (status) {
     var items = [];
     var i, onUpdate, onActivity, defaultValue;
 
+    function updateCharacterCount(el) {
+        var count = cm.getValue().length;
+        var minimum = options.minLength;
+        var maximum = options.maxLength;
+        var text = '' + count;
+        var description = count + ' characters';
+
+        el.classList.remove('character-count-warning');
+        el.classList.remove('character-count-error');
+
+        if (maximum !== undefined) {
+            text += ' / ' + maximum;
+            description += ' out of ' + maximum + ' maximum';
+        }
+
+        if (minimum !== undefined) {
+            description += '; ' + minimum + ' minimum';
+
+            if (count < minimum) {
+                text += ' (minimum ' + minimum + ')';
+                el.classList.add('character-count-warning');
+            }
+        }
+
+        if (maximum !== undefined) {
+            var warningStart = Math.ceil(maximum * 0.9);
+
+            if (maximum > 1) {
+                warningStart = Math.min(maximum - 1, warningStart);
+            }
+
+            if (count >= maximum) {
+                el.classList.remove('character-count-warning');
+                el.classList.add('character-count-error');
+                el.setAttribute('aria-live', 'assertive');
+
+                if (count === maximum) {
+                    text += ' (limit reached)';
+                    description += '; limit reached';
+                } else {
+                    text += ' (' + (count - maximum) + ' over limit)';
+                    description += '; ' + (count - maximum) + ' over limit';
+                }
+            } else {
+                el.setAttribute('aria-live', 'polite');
+
+                if (count >= warningStart) {
+                    el.classList.add('character-count-warning');
+                    text += ' (near limit)';
+                    description += '; near limit';
+                }
+            }
+        } else {
+            el.setAttribute('aria-live', 'polite');
+        }
+
+        el.textContent = text;
+        el.setAttribute('aria-label', description);
+    }
+
     for (i = 0; i < status.length; i++) {
         // Reset some values
         onUpdate = undefined;
@@ -2794,6 +2858,9 @@ EasyMDE.prototype.createStatusbar = function (status) {
                 onUpdate = function (el) {
                     el.innerHTML = wordCount(cm.getValue());
                 };
+            } else if (name === 'characters') {
+                defaultValue = updateCharacterCount;
+                onUpdate = updateCharacterCount;
             } else if (name === 'lines') {
                 defaultValue = function (el) {
                     el.innerHTML = cm.lineCount();
