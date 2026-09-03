@@ -230,6 +230,16 @@
     content: 'characters: '
 }
 
+.editor-statusbar .characters.character-count-warning {
+    color: #b26a00;
+    font-weight: 700;
+}
+
+.editor-statusbar .characters.character-count-error {
+    color: #d32f2f;
+    font-weight: 700;
+}
+
 .editor-preview-full {
     position: absolute;
     width: 100%;

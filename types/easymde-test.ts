@@ -16,6 +16,8 @@ const editor = new EasyMDE({
         console.log('FullscreenToggled', full);
     },
     theme: 'someOtherTheme',
+    minLength: 10,
+    maxLength: 100,
     minHeight: '200px',
 });
 

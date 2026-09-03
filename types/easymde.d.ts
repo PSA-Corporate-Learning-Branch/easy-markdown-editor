@@ -191,6 +191,8 @@ declare namespace EasyMDE {
         insertTexts?: InsertTextOptions;
         lineNumbers?: boolean;
         lineWrapping?: boolean;
+        minLength?: number;
+        maxLength?: number;
         minHeight?: string;
         maxHeight?: string;
         parsingConfig?: ParsingOptions;

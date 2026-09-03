@@ -143,6 +143,8 @@ easyMDE.value('New input for **EasyMDE**');
   - table
 - **lineNumbers**: If set to `true`, enables line numbers in the editor.
 - **lineWrapping**: If set to `false`, disable line wrapping. Defaults to `true`.
+- **minLength**: Sets the minimum character count. When set, the character count is added to the default status bar and warns while the value is shorter than the minimum. Must be a non-negative integer no greater than `maxLength`.
+- **maxLength**: Sets the maximum character count. When set, the character count is added to the default status bar and shows progress toward the maximum. It warns within the final 10% and alerts at or above the limit. Typing is not blocked, so over-limit content can still be edited. Must be a non-negative integer no less than `minLength`.
 - **minHeight**: Sets the minimum height for the composition area, before it starts auto-growing. Should be a string containing a valid CSS value like `"500px"`. Defaults to `"300px"`.
 - **maxHeight**: Sets fixed height for the composition area. `minHeight` option will be ignored. Should be a string containing a valid CSS value like `"500px"`. Defaults to `undefined`.
 - **onToggleFullScreen**: A function that gets called when the editor's full screen mode is toggled. The function will be passed a boolean as parameter, `true` when the editor is currently going into full screen mode, or `false`.
@@ -200,7 +202,7 @@ easyMDE.value('New input for **EasyMDE**');
 - **nativeSpellcheck**: If set to `false`, disable native spell checker. Defaults to `true`.
 - **sideBySideFullscreen**: If set to `false`, allows side-by-side editing without going into fullscreen. Defaults to `true`.
 - **status**: If set to `false`, hide the status bar. Defaults to the array of built-in status bar items.
-  - Optionally, you can set an array of status bar items to include, and in what order. You can even define your own custom status bar items.
+  - Optionally, you can set an array of status bar items to include, and in what order. Built-in items are `"autosave"`, `"lines"`, `"words"`, `"characters"`, and `"cursor"`. You can even define your own custom status bar items. When setting a custom array, include `"characters"` to display `minLength` or `maxLength` progress.
 - **styleSelectedText**: If set to `false`, remove the `CodeMirror-selectedtext` class from selected lines. Defaults to `true`.
 - **syncSideBySidePreviewScroll**: If set to `false`, disable syncing scroll in side by side mode. Defaults to `true`.
 - **tabSize**: If set, customize the tab size. Defaults to `2`.
@@ -252,6 +254,8 @@ const editor = new EasyMDE({
         table: ["", "\n\n| Column 1 | Column 2 | Column 3 |\n| -------- | -------- | -------- |\n| Text     | Text      | Text     |\n\n"],
     },
     lineWrapping: false,
+    minLength: 100,
+    maxLength: 1000,
     minHeight: "500px",
     parsingConfig: {
         allowAtxHeaderWithoutSpace: true,
